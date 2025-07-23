@@ -1,19 +1,23 @@
 package api
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 
+	"github.com/AnshSinghSonkhia/go-rest-api-postgresql/services/users"
 	"github.com/gorilla/mux"
 )
 
 type APIServer struct {
 	addr string
+	db   *sql.DB
 }
 
-func NewAPIServer(addr string) *APIServer {
+func NewAPIServer(addr string, db *sql.DB) *APIServer {
 	return &APIServer{
 		addr: addr,
+		db:   db,
 	}
 }
 
@@ -22,15 +26,9 @@ func (s *APIServer) Run() error {
 	router := mux.NewRouter()
 
 	// register services
-
-	// c := cors.New(cors.Options{
-	// 	AllowedOrigins:   []string{"http://localhost:5173"},
-	// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-	// 	AllowedHeaders:   []string{"Content-Type", "Authorization"},
-	// 	AllowCredentials: true,
-	// })
-
-	// corsHandler := c.Handler(router)
+	userStore := users.NewUserStore(s.db)
+	userHandler := users.NewHandler(userStore)
+	userHandler.RegisterRoutes(router)
 
 	log.Println("Listening on port", s.addr)
 

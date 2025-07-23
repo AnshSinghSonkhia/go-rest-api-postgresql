@@ -1,0 +1,14 @@
+{
+  "name": "go-rest-api-postgresql",
+  "version": "1.0.0",
+  "description": "Go REST API with PostgreSQL, npm scripts for build/run/migration.",
+  "scripts": {
+    "build": "go build -o bin/restapi cmd/main.go",
+    "run": "npm run build && ./bin/restapi",
+    "migration": "echo Please run migration commands manually as npm cannot handle makefile variables.",
+    "migrate-up": "go run cmd/migrate/main.go up",
+    "migrate-down": "go run cmd/migrate/main.go down"
+  },
+  "author": "",
+  "license": "MIT"
+}
